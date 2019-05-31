@@ -60,6 +60,38 @@ app.post('/songs', (req, res) => {
     )
 });
 
+//route to delete
+app.delete('/songs/:id', (req, res) => {
+    pool.query(`
+    DELETE FROM "songs" WHERE "id"=$1;
+    `, [req.params.id]).then(
+        () => {
+            res.sendStatus(200);//204 - no response to send back
+        }
+    ).catch(
+        error => {
+            console.log('error with delete song query ', error);
+            res.sendStatus(500);
+        }
+    )
+})
+
+//put route
+app.put('/songs/:id', (req, res) => {
+    pool.query(`
+    UPDATE "songs" SET "artist"='Ally' WHERE "id"=$1;
+    `, [req.params.id]).then(
+        () => {
+            res.sendStatus(201);
+        }
+    ).catch(
+        error => {
+            console.log(error);
+            res.sendStatus(500);
+        }
+    )
+})
+
 
 app.listen(PORT, () => {
     console.log('in port', PORT);
